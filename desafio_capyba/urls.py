@@ -17,5 +17,5 @@ Including another URLconf
 from django.urls import path, include
 
 urlpatterns = [
-    path('auth/', include('rest_framework.urls')),
+    path('auth/', include('rest_framework.urls')),  # to authenticate and use DRF admin 
 ]
