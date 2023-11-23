@@ -29,4 +29,6 @@ urlpatterns = [
     path('policy/', views.PolicyView.as_view(), name='policy'),
     path('login/', obtain_auth_token),
     path('', include(router.urls)),
+    path('confirmation/', views.EmailConfirmationView.as_view(), name='email_confirmation'),
+    path('validate/', views.EmailValidationView.as_view(), name='email_validation'),
 ]

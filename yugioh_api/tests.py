@@ -130,3 +130,116 @@ Monster Effect: When this Pendulum Summoned card inflicts battle damage to your 
         self.assertEqual(response.data['results'][0]['title'], 'Odd-Eyes Phantom Dragon')
         self.assertEqual(response.data['results'][1]['title'], 'Dark Magician')
         self.assertEqual(response.data['results'][2]['title'], 'Blue-Eyes White Dragon')
+
+
+class EmailTests(APITestCase):
+    @classmethod
+    def setUpTestData(cls):
+        Player.objects.create(
+            user=User.objects.create_user(
+                username='renanlfTest',
+                email='renanlftest@gmail.com',
+                password='123456',
+                first_name='Renan'
+            ),
+            pic=None,
+            authenticated=False,
+            token=''
+        )
+        Player.objects.create(
+            user=User.objects.create_user(
+                username='renanlfTest2',
+                email='renanlftest2@gmail.com',
+                password='123456',
+                first_name='Renan'
+            ),
+            pic=None,
+            authenticated=True,
+            token='token'
+        )
+        Player.objects.create(
+            user=User.objects.create_user(
+                username='renanlfTest3',
+                email='renanlftest3@gmail.com',
+                password='123456',
+                first_name='Renan'
+            ),
+            pic=None,
+            authenticated=False,
+            token=''
+        )
+        Player.objects.create(
+            user=User.objects.create_user(
+                username='renanlfTest4',
+                email='renanlftest4@gmail.com',
+                password='123456',
+                first_name='Renan'
+            ),
+            pic=None,
+            authenticated=False,
+            token=''
+        )
+
+
+    def test_get_confirmation(self):
+        login_token = self.client.post('/login/', {
+            'username': 'renanlfTest',
+            'password': '123456',
+        }).data['token']
+
+        response = self.client.get('/confirmation/', {}, headers={
+            "Authorization": f"Token {login_token}"
+        })
+
+        self.assertEqual(response.data['email'], 'renanlftest@gmail.com')
+        self.assertTrue(response.data['link'].startswith('validate/?username=renanlfTest&token='))
+
+    def test_get_confirmation_validated_email(self):
+        login_token = self.client.post('/login/', {
+            'username': 'renanlfTest2',
+            'password': '123456',
+        }).data['token']
+
+        response = self.client.get('/confirmation/', {}, headers={
+            "Authorization": f"Token {login_token}"
+        })
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.data, 'Email already validated')
+
+    def test_post_validation(self):
+        login_token = self.client.post('/login/', {
+            'username': 'renanlfTest3',
+            'password': '123456',
+        }).data['token']
+
+        validation_url = self.client.get('/confirmation/', headers={
+            "Authorization": f"Token {login_token}"
+        }).data['link']
+
+        response = self.client.get(f"/{validation_url}", headers={
+            "Authorization": f"Token {login_token}"
+        })
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, 'Email validated successfully!')
+
+        response = self.client.get(f"/{validation_url}", headers={
+            "Authorization": f"Token {login_token}"
+        })
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.data, 'Email already validated')
+
+    def test_post_validation_wrong_token(self):
+        login_token = self.client.post('/login/', {
+            'username': 'renanlfTest4',
+            'password': '123456',
+        }).data['token']
+
+        validation_url = 'validate/?username=renanlfTest4&token=abcdef'
+
+        response = self.client.get(f"/{validation_url}", headers={
+            "Authorization": f"Token {login_token}"
+        })
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data, 'Invalid token')
+
