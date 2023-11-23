@@ -20,4 +20,5 @@ from yugioh_api import views
 urlpatterns = [
     path('auth/', include('rest_framework.urls')),  # to authenticate and use DRF admin
     path('register/', views.RegisterView.as_view(), name='auth_register'),
+    path('policy/', views.PolicyView.as_view(), name='policy'),
 ]

@@ -28,3 +28,6 @@ class RegisterLoginPlayerTests(APITestCase):
             })
             self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
+    def test_policies(self):
+        response = self.client.get('/policy/')
+        self.assertEqual(response.get('Content-Disposition'), 'attachment; filename="policies.pdf"')

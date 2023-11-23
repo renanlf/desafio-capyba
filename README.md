@@ -16,3 +16,4 @@ Neste projeto foram instalados os seguintes pacotes (através do `pip install` )
 ## Funcionalidades
 
 1. Através do Endpoint `register/` é possível cadastrar um novo jogador (usuário do sistema) usando o método POST;
+2. Com o Endpoint `policy/` é realizado o download de um PDF com as políticas de uso (aqui representados pelo PDF dos requisitos);
