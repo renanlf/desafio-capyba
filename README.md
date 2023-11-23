@@ -18,3 +18,5 @@ Neste projeto foram instalados os seguintes pacotes (através do `pip install` )
 1. Através do Endpoint `register/` é possível cadastrar um novo jogador (usuário do sistema) usando o método POST;
 2. Com o Endpoint `policy/` é realizado o download de um PDF com as políticas de uso (aqui representados pelo PDF dos requisitos);
 3. `login\` realiza o login do jogador através do método POST e retorna um Token (nesta API o método de acesso se dará através de tokens);
+4. Lista de cartas através do endpoint `cards\` permitindo filtrar os campos de título da carta e descrição através do parâmetro `search`. Além disso, é permitido ordenar os resultados por diversos campos, incluindo a data da primeira impressão da carta. Também é permitido buscar as cartas pelo código, título ou data da impressão. Para mais detalhes você pode consultar o arquivo de testes (`yugioh_api/tests.py`);
+5. Manipulação de cartas através da API navegável do Django Rest Framework, mediante login do admin;

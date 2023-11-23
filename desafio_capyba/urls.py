@@ -15,13 +15,18 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path, include
+from rest_framework import routers
 from rest_framework.authtoken.views import obtain_auth_token
 
 from yugioh_api import views
+
+router = routers.DefaultRouter()
+router.register(r'cards', views.CardViewSet, basename='card')
 
 urlpatterns = [
     path('auth/', include('rest_framework.urls')),  # to authenticate and use DRF admin
     path('register/', views.RegisterView.as_view(), name='auth_register'),
     path('policy/', views.PolicyView.as_view(), name='policy'),
     path('login/', obtain_auth_token),
+    path('', include(router.urls)),
 ]

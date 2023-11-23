@@ -11,3 +11,13 @@ class Player(models.Model):
     pic = models.ImageField()
     authenticated = models.BooleanField()
     token = models.CharField(max_length=32)
+
+
+class Card(models.Model):
+    cid = models.IntegerField()
+    title = models.CharField(max_length=50)
+    attribute = models.CharField(max_length=10)
+    description = models.TextField()
+    attack = models.IntegerField()
+    defense = models.IntegerField()
+    release_date = models.DateField()

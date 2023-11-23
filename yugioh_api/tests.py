@@ -1,9 +1,10 @@
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from yugioh_api.models import Player
+from yugioh_api.models import Player, Card
 from django.contrib.auth.models import User
 
+from datetime import datetime
 
 class RegisterLoginPlayerTests(APITestCase):
     def test_register_player(self):
@@ -34,6 +35,7 @@ class RegisterLoginPlayerTests(APITestCase):
     def test_policies(self):
         response = self.client.get('/policy/')
         self.assertEqual(response.get('Content-Disposition'), 'attachment; filename="policies.pdf"')
+
     def test_login(self):
         """
         Ensure we can login
@@ -64,3 +66,67 @@ class RegisterLoginPlayerTests(APITestCase):
         })
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+
+class CardTests(APITestCase):
+    @classmethod
+    def setUpTestData(cls):
+        Card.objects.create(
+            cid=1234567,
+            title='Dark Magician',
+            attribute='Dark',
+            description='The ultimate wizard in terms of attack and defense.',
+            attack=2500,
+            defense=2100,
+            release_date=datetime.strptime('2004-03-01', '%Y-%m-%d'),
+        )
+        Card.objects.create(
+            cid=89631139,
+            title='Blue-Eyes White Dragon',
+            attribute='Light',
+            description='This legendary dragon is a powerful engine of destruction. Virtually invincible, very few have faced this awesome creature and lived to tell the tale.',
+            attack=3000,
+            defense=2500,
+            release_date=datetime.strptime('2004-03-01', '%Y-%m-%d'),
+        )
+        Card.objects.create(
+            cid=93149655,
+            title='Odd-Eyes Phantom Dragon',
+            attribute='Dark',
+            description="Pendulum Effect: Once per turn, when an attack is declared involving your face-up monster and an opponent's monster, if you have an \"Odd-Eyes\" card in your other Pendulum Zone: You can make that monster you control gain 1200 ATK until the end of the Battle Phase (even if this card leaves the field).\
+Monster Effect: When this Pendulum Summoned card inflicts battle damage to your opponent by attacking: You can inflict damage to your opponent equal to the number of \"Odd-Eyes\" cards in your Pendulum Zones x 1200. You can only use this effect of \"Odd-Eyes Phantom Dragon\" once per turn.",
+            attack=2500,
+            defense=2000,
+            release_date=datetime.strptime('2017-10-05', '%Y-%m-%d'),
+        )
+
+    def test_get_all(self):
+        response = self.client.get('/cards/')
+        self.assertEqual(response.data['count'], 3)
+        self.assertEqual(response.data['results'][0]['title'], 'Dark Magician')
+        self.assertEqual(response.data['results'][1]['title'], 'Blue-Eyes White Dragon')
+        self.assertEqual(response.data['results'][2]['title'], 'Odd-Eyes Phantom Dragon')
+
+    def test_get_pagination(self):
+        response = self.client.get('/cards/?page_size=2&page=2')
+        self.assertEqual(response.data['count'], 3)
+        self.assertEqual(response.data['results'][0]['title'], 'Odd-Eyes Phantom Dragon')
+
+    def test_get_search(self):
+        response = self.client.get('/cards/?search=Dragon')
+        self.assertEqual(response.data['count'], 2)
+        self.assertEqual(response.data['results'][0]['title'], 'Blue-Eyes White Dragon')
+        self.assertEqual(response.data['results'][1]['title'], 'Odd-Eyes Phantom Dragon')
+
+    def test_get_by_release_date(self):
+        response = self.client.get('/cards/?release_date=2004-03-01')
+        self.assertEqual(response.data['count'], 2)
+        self.assertEqual(response.data['results'][0]['title'], 'Dark Magician')
+        self.assertEqual(response.data['results'][1]['title'], 'Blue-Eyes White Dragon')
+
+    def test_get_ordering(self):
+        response = self.client.get('/cards/?ordering=-release_date')
+        self.assertEqual(response.data['count'], 3)
+        self.assertEqual(response.data['results'][0]['title'], 'Odd-Eyes Phantom Dragon')
+        self.assertEqual(response.data['results'][1]['title'], 'Dark Magician')
+        self.assertEqual(response.data['results'][2]['title'], 'Blue-Eyes White Dragon')

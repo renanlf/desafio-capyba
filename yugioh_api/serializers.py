@@ -2,7 +2,7 @@ from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.models import User
-from yugioh_api.models import Player
+from yugioh_api.models import Player, Card
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -28,3 +28,10 @@ class RegisterSerializer(serializers.ModelSerializer):
             authenticated=False,
             token='',
         )
+
+
+class CardSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Card
+        fields = ['url', 'id', 'cid', 'title', 'description', 'attribute', 'attack', 'defense', 'release_date']
+
