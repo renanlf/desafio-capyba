@@ -15,7 +15,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path, include
+from yugioh_api import views
 
 urlpatterns = [
-    path('auth/', include('rest_framework.urls')),  # to authenticate and use DRF admin 
+    path('auth/', include('rest_framework.urls')),  # to authenticate and use DRF admin
+    path('register/', views.RegisterView.as_view(), name='auth_register'),
 ]
