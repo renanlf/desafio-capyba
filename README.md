@@ -36,8 +36,6 @@ git clone https://github.com/renanlf/desafio-capyba.git
 cd desafio-capyba
 ```
 
-Caso utilize ambiente UNIX, você pode executar o script de instalação através do comando `./install.sh`. E pular os próximos dois blocos de comando.
-
 O segundo passo é instalar as dependências para utilização do projeto mencionadas anteriormente.
 
 ```shell
