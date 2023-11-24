@@ -5,6 +5,17 @@ O objetivo deste desafio é desenvolver uma API REST com cadastro de usuário, b
 
 Para isso foi sugerido o uso do framework Django com Python. Topei o desafio e este é o meu primeiro projeto usando o Django Rest Framework :)
 
+<p align="center">
+    <img width='25%' src='https://media2.giphy.com/media/5USTijryafZEQ/giphy.gif?cid=ecf05e47qrm6fqf3t0ajlc9ty49n01sf0la97kkj6o1c512i&ep=v1_gifs_search&rid=giphy.gif&ct=g'>
+</p>
+
+Bem, como o tema da construção da API era livre decidi desenvolver uma API relacionada ao jogo de cartas Yu-Gi-Oh!
+
+<p align="center">
+    <img width='25%' src='https://pm1.aminoapps.com/6747/fee53aef9af415a9ad9437a7fe69b777698dc104v2_00.jpg'>
+</p>
+As cartas possuem títulos, descrições, ataque, defesa e outras informações que achei interessante para o desafio :)
+
 ## Dependências
 
 Neste projeto foram instalados os seguintes pacotes (através do `pip install` ):
