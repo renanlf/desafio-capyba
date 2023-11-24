@@ -8,8 +8,8 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from yugioh_api.models import Player, Card
-from yugioh_api.serializers import RegisterSerializer, CardSerializer
+from yugioh_api.models import Player, Card, CardPrice
+from yugioh_api.serializers import RegisterSerializer, CardSerializer, CardPriceSerializer
 
 
 class MyPagination(PageNumberPagination):
@@ -83,3 +83,16 @@ class EmailValidationView(APIView):
             return Response('Email validated successfully!', status=status.HTTP_200_OK)
         else:
             return Response('Invalid token', status=status.HTTP_400_BAD_REQUEST)
+
+class CardPriceViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows card prices to be viewed or edited if authenticated.
+    """
+    queryset = CardPrice.objects.all()
+    serializer_class = CardPriceSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    pagination_class = MyPagination
+    filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
+    search_fields = ['card__title', 'card__description']
+    filterset_fields = ['card__cid', 'card__release_date', 'card__attribute', 'min_price', 'max_price']
+    ordering_fields = ['card__release_date', 'card__cid', 'card__title', 'min_price', 'max_price']

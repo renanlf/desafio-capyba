@@ -15,13 +15,30 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path, include
-from rest_framework import routers
+from rest_framework import routers, permissions
 from rest_framework.authtoken.views import obtain_auth_token
 
 from yugioh_api import views
 
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
+schema_view = get_schema_view(
+   openapi.Info(
+      title="API de cartas de Yu-Gi-Oh!",
+      default_version='v1',
+      description="API desenvolvida como desafio técnico que contém cartas de Yu-Gi-Oh!",
+      terms_of_service="https://www.google.com/policies/terms/",
+      contact=openapi.Contact(email="leandrorenanf@gmail.com"),
+      license=openapi.License(name="BSD License"),
+   ),
+   public=True,
+   permission_classes=[permissions.AllowAny,],
+)
+
 router = routers.DefaultRouter()
 router.register(r'cards', views.CardViewSet, basename='card')
+router.register(r'prices', views.CardPriceViewSet, basename='card_price')
 
 urlpatterns = [
     path('auth/', include('rest_framework.urls')),  # to authenticate and use DRF admin
@@ -31,4 +48,7 @@ urlpatterns = [
     path('', include(router.urls)),
     path('confirmation/', views.EmailConfirmationView.as_view(), name='email_confirmation'),
     path('validate/', views.EmailValidationView.as_view(), name='email_validation'),
+    path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]

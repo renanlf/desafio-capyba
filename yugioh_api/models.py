@@ -21,3 +21,9 @@ class Card(models.Model):
     attack = models.IntegerField()
     defense = models.IntegerField()
     release_date = models.DateField()
+
+
+class CardPrice(models.Model):
+    card = models.OneToOneField(Card, on_delete=models.CASCADE)
+    min_price = models.FloatField()
+    max_price = models.FloatField()
