@@ -13,6 +13,7 @@ Neste projeto foram instalados os seguintes pacotes (através do `pip install` )
 - **django-filter**: biblioteca que suporta o uso de filtros nas Views e assim simplifica as buscas avançadas na API;
 - **Pillow**: permite o uso de `ImageField` no framework (para armazenar as imagens do perfil);
 - **drf-yasg**: biblioteca que gerencia a especificação da documentação no formato OpenAPI.
+- **django_seed**: biblioteca responsável por criar exemplos aleatórios e popular o banco de dados. Seed significa semente em inglês. Semear.
 
 ## Funcionalidades
 
@@ -47,6 +48,12 @@ Após a instalação das dependências, é necessário criar o banco de dados at
 python manage.py makemigrations
 python manage.py migrate
 ```
+
+Para popular o banco com exemplos aleatórios, podemos usar o comando:
+```shell
+python manage.py seed yugioh_api --number=100
+```
+Esse comando irá criar 100 instâncias para cada tabela no banco de dados!
 
 Por fim, para iniciar o servidor, execute:
 ```shell
