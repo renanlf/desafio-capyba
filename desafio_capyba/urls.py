@@ -39,6 +39,7 @@ schema_view = get_schema_view(
 router = routers.DefaultRouter()
 router.register(r'cards', views.CardViewSet, basename='card')
 router.register(r'prices', views.CardPriceViewSet, basename='card_price')
+router.register(r'players', views.PlayerViewSet, basename='player')
 
 urlpatterns = [
     path('auth/', include('rest_framework.urls')),  # to authenticate and use DRF admin

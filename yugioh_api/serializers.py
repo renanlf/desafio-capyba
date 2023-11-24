@@ -43,3 +43,18 @@ class CardPriceSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = CardPrice
         fields = ['card', 'min_price', 'max_price']
+
+
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = ['email', 'username', 'first_name']
+
+
+class PlayerSerializer(serializers.HyperlinkedModelSerializer):
+    user = UserSerializer()
+
+    class Meta:
+        model = Player
+        fields = ['url', 'id', 'user', 'pic']
+
