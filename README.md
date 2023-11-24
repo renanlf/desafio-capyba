@@ -12,6 +12,7 @@ Neste projeto foram instalados os seguintes pacotes (através do `pip install` )
 - **markdown**: para suporte da API navegável (ao utilizar um navegador);
 - **django-filter**: biblioteca que suporta o uso de filtros nas Views e assim simplifica as buscas avançadas na API;
 - **Pillow**: permite o uso de `ImageField` no framework (para armazenar as imagens do perfil);
+- **drf-yasg**: biblioteca que gerencia a especificação da documentação no formato OpenAPI.
 
 ## Funcionalidades
 
@@ -22,3 +23,41 @@ Neste projeto foram instalados os seguintes pacotes (através do `pip install` )
 5. Manipulação de cartas através da API navegável do Django Rest Framework, mediante login do admin;
 6. Endpoint `confirmation/` responsável por gerar um link de validação para um jogador devidamente logado. Nesta versão é gerado o link, sendo facilmente implementável no futuro o envio do link por e-mail;
 7. Endpoint `validate/` responsável por validar o e-mail do usuário logado, ou retornar mensagem apropriada caso já esteja logado ou seu token for inválido;
+8. Lista de preços `prices/` contendo uma carta e seus valores mínimos e máximo de venda. Esta lista é privada, só é possível visualizá-la logado;
+9. Endpoint `swagger/` com a especificação da API em formato OpenAPI;
+
+## Instalação
+
+Para instalar e executar o projeto é necessário que tenha instalado o `git`, o `python` e o `pip`. Para mais detalhes você pode consultar as páginas oficiais das tecnologias.
+
+O primeiro passo é realizar o clone do projeto na máquina atual:
+```shell
+git clone https://github.com/renanlf/desafio-capyba.git
+cd desafio-capyba
+```
+
+Caso utilize ambiente UNIX, você pode executar o script de instalação através do comando `./install.sh`. E pular os próximos dois blocos de comando.
+
+O segundo passo é instalar as dependências para utilização do projeto mencionadas anteriormente.
+
+```shell
+pip install -r requirements.txt
+```
+
+Após a instalação das dependências, é necessário criar o banco de dados através dos seguintes comandos:
+```shell
+python manage.py makemigrations
+python manage.py migrate
+```
+
+Por fim, para iniciar o servidor, execute:
+```shell
+python manage.py runserver
+```
+
+Se tudo ocorrer bem, você deverá conseguir acessar a API através do endereço http://127.0.0.1:8000
+
+## Conclusões
+Este foi meu primeiro projeto usando o Django Rest Framework e confesso que gostei de sua praticidade e pretendo utilizá-lo mais vezes. 
+Por motivos diversos não consegui implementar todas as funcionalidades. 
+Pretendo voltar e atualizar o projeto no futuro.
